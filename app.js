@@ -1,6 +1,5 @@
 // CONFIG
-const WEBHOOK_URL = '[I WILL ADD LATER]'; // User to replace this
-
+const WEBHOOK_URL = "https://automatizacioncarneirosystem.com/webhook/gastos-tracker";
 // STATE
 let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let fixedExpenses = JSON.parse(localStorage.getItem('fixed_expenses')) || [];
@@ -349,3 +348,4 @@ function showToast(msg) {
 
 // START
 init();
+
