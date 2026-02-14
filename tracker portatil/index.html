@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Barber Finanzas PWA</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#121212">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1086/1086741.png">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header>
+            <div class="brand">
+                <h1>💈 BarberTracker</h1>
+            </div>
+            <div class="controls">
+                <div class="control-group">
+                    <label>Ubicación</label>
+                    <select id="locationSelect">
+                        <option value="Santiago">Santiago</option>
+                        <option value="Milladoiro">Milladoiro</option>
+                        <option value="Bertamiráns">Bertamiráns</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Mes</label>
+                    <input type="month" id="monthSelect">
+                </div>
+            </div>
+        </header>
+
+        <!-- Summary Cards -->
+        <section class="dashboard">
+            <div class="card income">
+                <span class="label">Ingresos</span>
+                <span class="value" id="totalIncome">0,00 €</span>
+            </div>
+            <div class="card expense">
+                <span class="label">Gastos</span>
+                <span class="value" id="totalExpense">0,00 €</span>
+            </div>
+            <div class="card profit">
+                <span class="label">Beneficio Neto</span>
+                <span class="value" id="netProfit">0,00 €</span>
+            </div>
+            <div class="card partner">
+                <span class="label">Beneficio / Socio</span>
+                <span class="value" id="partnerProfit">0,00 €</span>
+            </div>
+        </section>
+
+        <!-- Fixed Expenses Actions -->
+        <section class="fixed-actions">
+            <button class="btn-text" id="btnManageFixed">⚙️ Gestionar Fijos</button>
+            <button class="btn-text" id="btnApplyFixed">🚀 Aplicar Fijos al Mes</button>
+        </section>
+
+        <!-- Action Grid -->
+        <section class="actions">
+            <button class="action-btn income-btn" onclick="openModal('income')">
+                <div class="icon">+</div>
+                <span>Ingreso</span>
+            </button>
+            <button class="action-btn expense-btn" onclick="openModal('expense')">
+                <div class="icon">-</div>
+                <span>Gasto</span>
+            </button>
+            <button class="action-btn salary-btn" onclick="openModal('salary')">
+                <div class="icon">$</div>
+                <span>Nómina</span>
+            </button>
+        </section>
+
+        <!-- Recent Transactions -->
+        <section class="history">
+            <h3>Historial <span id="historyMonthLabel"></span></h3>
+            <div id="transactionList" class="transaction-list">
+                <!-- Items will be injected here -->
+                <div class="empty-state">Cargando...</div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modals -->
+    <div id="modalBackdrop" class="modal-backdrop hidden"></div>
+
+    <!-- Generic Transaction Modal -->
+    <div id="transactionModal" class="modal hidden">
+        <div class="modal-header">
+            <h2 id="modalTitle">Nuevo Movimiento</h2>
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <form id="transactionForm" autocomplete="off">
+            <input type="hidden" id="entryType">
+
+            <!-- Category (Only for Expense) -->
+            <div class="form-group" id="categoryGroup">
+                <label>Categoría</label>
+                <select id="categoryInput">
+                    <option value="Productos">Productos</option>
+                    <option value="Luz">Luz</option>
+                    <option value="Agua">Agua</option>
+                    <option value="Alquiler">Alquiler</option>
+                    <option value="Internet">Internet</option>
+                    <option value="Gestoría">Gestoría</option>
+                    <option value="Limpieza">Limpieza</option>
+                    <option value="Mantenimiento">Mantenimiento</option>
+                    <option value="Publicidad">Publicidad</option>
+                    <option value="Varios">Varios</option>
+                </select>
+            </div>
+
+            <!-- Employee (Only for Salary) -->
+            <div class="form-group hidden" id="employeeGroup">
+                <label>Empleado</label>
+                <input type="text" id="employeeInput" placeholder="Nombre completo">
+            </div>
+
+            <div class="form-group">
+                <label>Concepto</label>
+                <input type="text" id="conceptInput" placeholder="Ej. Detalle del pago" required>
+            </div>
+
+            <div class="form-group">
+                <label>Importe (€)</label>
+                <input type="number" id="amountInput" step="0.01" placeholder="0.00" required inputmode="decimal">
+            </div>
+
+            <button type="submit" class="submit-btn" id="saveBtn">Guardar</button>
+        </form>
+    </div>
+
+    <!-- Fixed Expenses Manager Modal -->
+    <div id="fixedManagerModal" class="modal hidden">
+        <div class="modal-header">
+            <h2>Gastos Fijos (<span id="fixedLocationDisplay"></span>)</h2>
+            <button class="close-btn" onclick="closeFixedModal()">&times;</button>
+        </div>
+        <div class="fixed-content">
+            <p style="font-size: 0.8rem; color: #aaa; margin-bottom: 15px;">Define aquí los gastos que se repiten cada
+                mes. Luego usa "Aplicar" en la pantalla principal.</p>
+
+            <div class="add-fixed-form">
+                <select id="fixedCategory" style="flex:1;">
+                    <option value="Alquiler">Alquiler</option>
+                    <option value="Luz">Luz</option>
+                    <option value="Agua">Agua</option>
+                    <option value="Internet">Internet</option>
+                    <option value="Gestoría">Gestoría</option>
+                    <option value="Software">Software</option>
+                </select>
+                <input type="number" id="fixedAmount" placeholder="€" step="0.01" style="width: 80px;">
+                <button id="btnAddFixed" class="btn-small">Añadir</button>
+            </div>
+            <ul id="fixedList" class="fixed-list">
+                <!-- Fixed expenses list -->
+            </ul>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">Notificación</div>
+
+    <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('SW Registered'))
+                .catch(err => console.log('SW Error', err));
+        }
+    </script>
+</body>
+
+</html>

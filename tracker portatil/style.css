@@ -1,0 +1,390 @@
+:root {
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --accent-color: #bb86fc;
+    --success-color: #03dac6;
+    --error-color: #cf6679;
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --radius: 12px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Container */
+.app-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-bottom: 80px; /* Space for scroll */
+}
+
+/* Header */
+header {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.brand h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, #bb86fc, #9a67ea);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+}
+
+.control-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.control-group label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+select, input[type="month"] {
+    background: var(--card-bg);
+    border: 1px solid #333;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    width: 100%;
+    outline: none;
+}
+
+select:focus, input:focus {
+    border-color: var(--accent-color);
+}
+
+/* Dashboard Cards */
+.dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 15px;
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    box-shadow: var(--card-shadow);
+}
+
+.card.profit {
+    grid-column: span 2;
+    background: linear-gradient(145deg, #2c2c2c, #222);
+    border: 1px solid #333;
+}
+
+.card .label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.card .value {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.income .value { color: var(--success-color); }
+.expense .value { color: var(--error-color); }
+.profit .value { color: var(--text-primary); font-size: 1.5rem; }
+.partner .value { color: var(--accent-color); }
+
+
+/* Fixed Actions */
+.fixed-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.btn-text {
+    flex: 1;
+    background: rgba(187, 134, 252, 0.1);
+    color: var(--accent-color);
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background 0.2s;
+}
+
+.btn-text:active {
+    background: rgba(187, 134, 252, 0.25);
+}
+
+/* Action Grid (FAB style but inline) */
+.actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.action-btn {
+    background: var(--card-bg); /* fallback */
+    border: none;
+    padding: 15px 10px;
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: var(--card-shadow);
+    color: white;
+    transition: transform 0.1s;
+}
+
+.action-btn:active {
+    transform: scale(0.96);
+}
+
+.action-btn .icon {
+    font-size: 1.5rem;
+    font-weight: bold;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.income-btn { background: rgba(3, 218, 198, 0.15); }
+.income-btn .icon { background: var(--success-color); color: #000; }
+.income-btn span { color: var(--success-color); font-weight: 600; }
+
+.expense-btn { background: rgba(207, 102, 121, 0.15); }
+.expense-btn .icon { background: var(--error-color); color: #000; }
+.expense-btn span { color: var(--error-color); font-weight: 600; }
+
+.salary-btn { background: rgba(187, 134, 252, 0.15); }
+.salary-btn .icon { background: var(--accent-color); color: #000; }
+.salary-btn span { color: var(--accent-color); font-weight: 600; }
+
+
+/* History */
+.history h3 {
+    margin-bottom: 15px;
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+.transaction-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.transaction-item {
+    background: var(--card-bg);
+    padding: 12px 15px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid transparent;
+}
+
+.type-variable { border-left-color: var(--error-color); }
+.type-fixed { border-left-color: #orange; }
+.type-salary { border-left-color: var(--accent-color); }
+.type-income { border-left-color: var(--success-color); }
+
+.t-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.t-concept {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.t-meta {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+.t-amount {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+/* Modals */
+.modal-backdrop {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 100;
+    backdrop-filter: blur(4px);
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.modal-backdrop.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal {
+    position: fixed;
+    bottom: 0; left: 0; width: 100%;
+    background: #252525;
+    border-radius: 20px 20px 0 0;
+    padding: 25px;
+    z-index: 101;
+    transform: translateY(0);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.modal.hidden {
+    transform: translateY(100%);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    background: #333;
+    border: 1px solid #444;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    border: none;
+    background: var(--accent-color);
+    color: #000;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Toast */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #323232;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 50px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    z-index: 200;
+    font-size: 0.9rem;
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.toast.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Fixed List */
+.fixed-list {
+    list-style: none;
+    padding: 0;
+}
+.fixed-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #333;
+    align-items: center;
+}
+.fixed-item button {
+    background: none;
+    border: none;
+    color: var(--error-color);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0 5px;
+}
+.add-fixed-form {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+.btn-small {
+    background: var(--accent-color);
+    border: none;
+    border-radius: 5px;
+    padding: 0 10px;
+    font-weight: 600;
+}
